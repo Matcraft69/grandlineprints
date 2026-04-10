@@ -8,8 +8,6 @@
     <style>
         :root { --gold: #f1c40f; --orange: #e67e22; --dark: #1a1a1a; --parchemin: #f4ece0; --accent: #e74c3c; }
         
-        * { cursor: url('https://cdn-icons-png.flaticon.com/32/1041/1041916.png'), auto; } /* Curseur Ancre */
-
         body { font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; background-color: var(--parchemin); background-image: url('https://www.transparenttextures.com/patterns/old-map.png'); color: var(--dark); overflow-x: hidden; }
         
         /* --- ROULETTE --- */
@@ -34,12 +32,11 @@
         .fruit-card { background: white; border-radius: 20px; padding: 30px; text-align: center; border: 2px solid #ddd; transition: 0.3s; cursor: pointer; }
         .fruit-card:hover { transform: translateY(-10px); border-color: var(--orange); }
         .fruit-img { width: 180px; height: 180px; object-fit: contain; margin-bottom: 20px; }
-        
-        /* Stock Bar */
-        .stock-container { margin-top: 15px; text-align: left; }
-        .stock-bar { width: 100%; height: 8px; background: #eee; border-radius: 10px; overflow: hidden; margin-top: 5px; }
-        .stock-fill { height: 100%; background: var(--accent); border-radius: 10px; }
-        .stock-text { font-size: 0.75rem; font-weight: bold; color: var(--accent); text-transform: uppercase; }
+
+        /* --- LIVRAISON / BLACÉ --- */
+        .delivery-section { background: white; border: 3px dashed var(--orange); margin: 40px auto; padding: 30px; max-width: 800px; border-radius: 20px; text-align: center; }
+        .map-link { display: inline-block; background: #34495e; color: white; padding: 10px 20px; border-radius: 50px; text-decoration: none; font-weight: bold; margin-top: 10px; transition: 0.3s; }
+        .map-link:hover { background: var(--orange); }
 
         /* --- FORGE SECTION --- */
         .forge-info { background: var(--dark); color: white; margin: 80px 0; padding: 60px 5%; text-align: center; }
@@ -74,7 +71,7 @@
         </div>
         <button id="spinBtn" onclick="spinWheel()" class="buy-button">LANCER</button>
         <div id="promoResult" style="margin-top:20px; font-weight:800; font-size:1.3rem; display:none;"></div>
-        <button id="closeRoulette" onclick="closeRoulette()" style="display:none; background:none; border:none; color:#7f8c8d; cursor:pointer; margin-top:15px; font-weight:bold;">Entrer</button>
+        <button id="closeRoulette" onclick="closeRoulette()" style="display:none; background:none; border:none; color:#7f8c8d; cursor:pointer; margin-top:15px; font-weight:bold;">Entrer dans la boutique</button>
     </div>
 </div>
 
@@ -94,31 +91,26 @@
     <div class="fruit-card" onclick="openFruit('gomu')">
         <img src="gomu.png" class="fruit-img">
         <h3>Gomu Gomu</h3>
-        <div style="font-weight:800; color:var(--accent);">19.99€</div>
-        <div class="stock-container">
-            <div class="stock-text">Plus que 2 exemplaires !</div>
-            <div class="stock-bar"><div class="stock-fill" style="width: 20%;"></div></div>
-        </div>
+        <div style="font-weight:800; color:var(--accent); font-size:1.5rem;">19.99€</div>
     </div>
     <div class="fruit-card" onclick="openFruit('ope')">
         <img src="ope.png" class="fruit-img">
         <h3>Ope Ope</h3>
-        <div style="font-weight:800; color:var(--accent);">19.99€</div>
-        <div class="stock-container">
-            <div class="stock-text">Dernière pièce !</div>
-            <div class="stock-bar"><div class="stock-fill" style="width: 10%;"></div></div>
-        </div>
+        <div style="font-weight:800; color:var(--accent); font-size:1.5rem;">19.99€</div>
     </div>
     <div class="fruit-card" onclick="openFruit('mera')">
         <img src="mera.png" class="fruit-img">
         <h3>Mera Mera</h3>
-        <div style="font-weight:800; color:var(--accent);">24.99€</div>
-        <div class="stock-container">
-            <div class="stock-text">En stock (5+)</div>
-            <div class="stock-bar"><div class="stock-fill" style="width: 80%; background: #2ecc71;"></div></div>
-        </div>
+        <div style="font-weight:800; color:var(--accent); font-size:1.5rem;">24.99€</div>
     </div>
 </main>
+
+<section class="delivery-section">
+    <h3 style="font-family:'Bebas Neue'; font-size:2rem; margin:0;">📍 POINT DE RETRAIT LOCAL</h3>
+    <p>Évitez les frais de Log Pose ! Récupérez votre commande directement au :</p>
+    <strong style="font-size:1.2rem;">Bourg de Blacé (69460)</strong><br>
+    <a href="https://www.google.com/maps/search/?api=1&query=Le+Bourg+69460+Blacé" target="_blank" class="map-link">📍 Voir sur Google Maps</a>
+</section>
 
 <section class="forge-info">
     <h2 style="font-family:'Bebas Neue'; font-size:3rem; color:var(--gold);">LES SECRETS DE LA FORGE</h2>
@@ -132,7 +124,7 @@
             <p>Chaque fruit est vérifié et poli par nos artisans avant expédition.</p>
         </div>
         <div class="forge-item">
-            <h4>LIVRAISON SÛRE</h4>
+            <h4>EXPÉDITION SÛRE</h4>
             <p>Emballage blindé anti-chocs pour traverser Grand Line sans encombre.</p>
         </div>
     </div>
@@ -174,7 +166,7 @@
                 document.getElementById('promoBadge').style.display = 'block';
             } else { 
                 discount = 0; 
-                res.innerHTML = "RIEN...";
+                res.innerHTML = "RIEN CETTE FOIS...";
             }
             res.style.display = "block";
             close.style.display = "inline-block";
