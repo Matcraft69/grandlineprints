@@ -1,216 +1,58 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Grand Line Fruits - Boutique Officielle</title>
-    <style>
-        :root {
-            --orange-site: #e67e22;
-            --blanc: #ffffff;
-            --noir: #1a1a1a;
-            --violet: #4B2E83;
-            --rouge: #e74c3c;
-        }
+     wheel.style.transform = `rotate(${totalRotation}deg)`;
+        btn.style.display = 'none';
 
-        body {
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            background-color: #f4f4f4;
-            scroll-behavior: smooth;
-        }
+        setTimeout(() => {
+            // L'aiguille est en haut (0°), mais la roue tourne dans le sens horaire.
+            // On calcule sur quoi tombe l'aiguille (on inverse l'angle pour trouver la position relative)
+            const angleFinal = (360 - (totalRotation % 360)) % 360;
+            
+            if (angleFinal >= 0 && angleFinal < 90) { 
+                discount = 0.10; 
+                res.innerHTML = "GAGNÉ ! <span style='color:var(--orange)'>-10%</span> SUR TOUT LE SHOP";
+                document.getElementById('promoBadge').style.display = 'block';
+            } 
+            else if (angleFinal >= 180 && angleFinal < 270) { 
+                discount = 0.20; 
+                res.innerHTML = "LÉGENDAIRE ! <span style='color:var(--accent)'>-20%</span> SUR TOUT LE SHOP";
+                document.getElementById('promoBadge').style.display = 'block';
+            } 
+            else { 
+                discount = 0; 
+                res.innerHTML = "RIEN... LE DESTIN EN A DÉCIDÉ AINSI.";
+            }
+            
+            res.style.display = "block";
+            close.style.display = "inline-block";
+        }, 4000);
+    }
 
-        /* --- HEADER --- */
-        .header {
-            background-color: var(--orange-site);
-            padding: 20px;
-            text-align: center;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        }
+    function closeRoulette() { document.getElementById('rouletteOverlay').style.display = 'none'; }
 
-        .logo-main { width: 120px; margin-bottom: 10px; }
-
-        .site-title {
-            font-size: 2.5rem;
-            font-weight: 900;
-            text-transform: uppercase;
-            margin: 5px 0;
-            color: #fff;
-        }
-
-        .nav ul {
-            list-style: none; padding: 0; display: flex; 
-            justify-content: center; gap: 20px;
-        }
-        .nav a {
-            color: #fff; text-decoration: none; font-weight: bold;
-            padding: 5px 10px; transition: 0.3s;
-        }
-        .nav a:hover { background: rgba(255,255,255,0.2); border-radius: 5px; }
-
-        /* --- BANNIÈRE --- */
-        .luffy-banner {
-            background: var(--blanc); padding: 20px; text-align: center;
-        }
-        .luffy-banner img {
-            width: 100%; max-width: 900px; border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
-
-        /* --- BOUTIQUE --- */
-        .section-title { text-align: center; margin-top: 40px; text-transform: uppercase; }
-
-        .shop-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 25px; padding: 40px; max-width: 1100px; margin: auto;
-        }
-
-        .fruit-card {
-            background: white; border-radius: 20px; padding: 20px;
-            text-align: center; cursor: pointer; transition: 0.3s;
-            border: 1px solid #ddd;
-        }
-        .fruit-card:hover { transform: translateY(-10px); border-color: var(--orange-site); }
-
-        .fruit-img {
-            width: 180px; height: 180px; object-fit: contain;
-            filter: drop-shadow(0 5px 10px rgba(0,0,0,0.1));
-        }
-
-        .price { color: var(--rouge); font-weight: bold; font-size: 1.4rem; }
-
-        /* --- MODALE --- */
-        .modal {
-            display: none; position: fixed; z-index: 2000;
-            left: 0; top: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8); backdrop-filter: blur(5px);
-        }
-        .modal-content {
-            background: white; margin: 5% auto; padding: 30px;
-            width: 80%; max-width: 500px; border-radius: 20px; text-align: center;
-            position: relative;
-        }
-        .close { position: absolute; right: 20px; top: 10px; font-size: 30px; cursor: pointer; }
-        
-        .history-box { 
-            text-align: left; background: #fff5e6; padding: 15px; 
-            border-radius: 10px; border-left: 5px solid var(--orange-site); margin-top: 15px;
-        }
-
-        .buy-button {
-            background: #0070ba; 
-            color: white; border: none; padding: 15px 30px; 
-            border-radius: 10px; cursor: pointer; margin-top: 20px; 
-            font-weight: bold; font-size: 1.1rem; transition: 0.3s;
-        }
-        .buy-button:hover { background: #005ea6; transform: scale(1.05); }
-
-        /* --- FOOTER --- */
-        .footer {
-            background: var(--orange-site); color: white; padding: 30px;
-            text-align: center; margin-top: 50px;
-        }
-    </style>
-</head>
-<body>
-
-<header class="header">
-    <img src="logo.png" class="logo-main" alt="Logo">
-    <div class="site-title">Grand Line Fruits</div>
-    <nav class="nav">
-        <ul>
-            <li><a href="#shop">Boutique</a></li>
-            <li><a href="#contact">Contact</a></li>
-        </ul>
-    </nav>
-</header>
-
-<section class="luffy-banner">
-    <img src="banniere.png" alt="Bannière Luffy">
-</section>
-
-<h2 class="section-title" id="shop">Nos Fruits du Démon</h2>
-
-<main class="shop-container">
-    <div class="fruit-card" onclick="openFruit('gomu')">
-        <img src="gomu.png" class="fruit-img" alt="Gomu Gomu">
-        <h3>Gomu Gomu no Mi</h3>
-        <span class="price">19,99€</span>
-    </div>
-
-    <div class="fruit-card" onclick="openFruit('ope')">
-        <img src="ope.png" class="fruit-img" alt="Ope Ope">
-        <h3>Ope Ope no Mi</h3>
-        <span class="price">19,99€</span>
-    </div>
-
-    <div class="fruit-card" onclick="openFruit('mera')">
-        <img src="mera.png" class="fruit-img" alt="Mera Mera">
-        <h3>Mera Mera no Mi</h3>
-        <span class="price">24,99€</span>
-    </div>
-</main>
-
-<div id="fruitModal" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeModal()">&times;</span>
-        <h2 id="modalName" style="color:var(--violet)"></h2>
-        <img id="modalImg" src="" class="fruit-img">
-        <p style="font-size:1.5rem;">Prix : <span id="modalPrice" class="price"></span></p>
-        <div class="history-box">
-            <p><strong>Détenteur :</strong> <span id="modalOwner"></span></p>
-            <p id="modalHistory"></p>
-        </div>
-        <button id="buyButton" class="buy-button">ACHETER AVEC PAYPAL</button>
-    </div>
-</div>
-
-<footer class="footer" id="contact">
-    <p>Grand Line Prints | Boutique Thématique Officielle</p>
-    <p style="font-size: 0.8rem; opacity: 0.8;">Rhône 69 - France</p>
-</footer>
-
-<script>
-    const fruitData = {
-        'gomu': { 
-            name: "Gomu Gomu no Mi", price: "19,99€", owner: "Monkey D. Luffy", 
-            history: "Permet de devenir élastique. Fruit légendaire du Dieu Nika.",
-            img: "gomu.png",
-            paypalLink: "https://www.paypal.me/glprints/19.99" 
-        },
-        'ope': { 
-            name: "Ope Ope no Mi", price: "19,99€", owner: "Trafalgar Law", 
-            history: "Permet de créer une zone 'Room' pour manipuler tout ce qui s'y trouve.",
-            img: "ope.png",
-            paypalLink: "https://www.paypal.me/glprints/19.99" 
-        },
-        'mera': { 
-            name: "Mera Mera no Mi", price: "24,99€", owner: "Sabo (Ace)", 
-            history: "Permet de contrôler et de se transformer en feu.",
-            img: "mera.png",
-            paypalLink: "https://www.paypal.me/glprints/24.99" 
-        }
+    const fruits = {
+        'gomu': { name: "Gomu Gomu", price: 19.99 },
+        'ope': { name: "Ope Ope", price: 19.99 },
+        'mera': { name: "Mera Mera", price: 24.99 }
     };
 
     function openFruit(id) {
-        const data = fruitData[id];
-        document.getElementById('modalName').innerText = data.name;
-        document.getElementById('modalPrice').innerText = data.price;
-        document.getElementById('modalOwner').innerText = data.owner;
-        document.getElementById('modalHistory').innerText = data.history;
-        document.getElementById('modalImg').src = data.img;
+        const item = fruits[id];
+        const final = (item.price * (1 - discount)).toFixed(2);
+        document.getElementById('modalName').innerText = item.name;
+        document.getElementById('modalImg').src = id + ".png";
         
-        const buyBtn = document.getElementById('buyButton');
-        buyBtn.onclick = function() {
-            window.open(data.paypalLink, '_blank');
-        };
-
-        document.getElementById('fruitModal').style.display = "block";
+        if (discount > 0) {
+            document.getElementById('oldPrice').innerText = item.price + "€";
+            document.getElementById('oldPrice').style.display = 'inline';
+        } else {
+            document.getElementById('oldPrice').style.display = 'none';
+        }
+        
+        document.getElementById('modalPrice').innerText = final + "€";
+        document.getElementById('buyButton').onclick = () => window.open(`https://www.paypal.me/glprints/${final}`, '_blank');
+        document.getElementById('fruitModal').style.display = 'block';
     }
 
-    function closeModal() { document.getElementById('fruitModal').style.display = "none"; }
-    window.onclick = function(e) { if(e.target == document.getElementById('fruitModal')) closeModal(); }
+    function closeModal() { document.getElementById('fruitModal').style.display = 'none'; }
 </script>
 
 </body>
