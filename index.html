@@ -33,7 +33,7 @@
         .fruit-card:hover { transform: translateY(-10px); border-color: var(--orange); }
         .fruit-img { width: 180px; height: 180px; object-fit: contain; margin-bottom: 20px; }
 
-        /* --- LIVRAISON / BLACÉ --- */
+        /* --- LIVRAISON --- */
         .delivery-section { background: white; border: 3px dashed var(--orange); margin: 40px auto; padding: 30px; max-width: 800px; border-radius: 20px; text-align: center; }
         .map-link { display: inline-block; background: #34495e; color: white; padding: 10px 20px; border-radius: 50px; text-decoration: none; font-weight: bold; margin-top: 10px; transition: 0.3s; }
         .map-link:hover { background: var(--orange); }
@@ -112,24 +112,6 @@
     <a href="https://www.google.com/maps/search/?api=1&query=Le+Bourg+69460+Blacé" target="_blank" class="map-link">📍 Voir sur Google Maps</a>
 </section>
 
-<section class="forge-info">
-    <h2 style="font-family:'Bebas Neue'; font-size:3rem; color:var(--gold);">LES SECRETS DE LA FORGE</h2>
-    <div class="forge-grid">
-        <div class="forge-item">
-            <h4>QUALITÉ MARINE</h4>
-            <p>Imprimé en haute résolution (0.1mm) pour des détails invisibles à l'œil nu.</p>
-        </div>
-        <div class="forge-item">
-            <h4>FINITION MAIN</h4>
-            <p>Chaque fruit est vérifié et poli par nos artisans avant expédition.</p>
-        </div>
-        <div class="forge-item">
-            <h4>EXPÉDITION SÛRE</h4>
-            <p>Emballage blindé anti-chocs pour traverser Grand Line sans encombre.</p>
-        </div>
-    </div>
-</section>
-
 <div id="fruitModal" class="modal">
     <div class="modal-content">
         <h2 id="modalName" style="font-family:'Bebas Neue'; font-size:3rem; margin:0; color:var(--orange);"></h2>
@@ -145,51 +127,68 @@
 
 <script>
     var discount = 0;
+
     function spinWheel() {
         var wheel = document.getElementById('wheel');
         var res = document.getElementById('promoResult');
         var btn = document.getElementById('spinBtn');
         var close = document.getElementById('closeRoulette');
-        var rand = Math.floor(Math.random() * 360);
-        var total = 3600 + rand;
-        wheel.style.transform = "rotate(" + total + "deg)";
+
+        var randomDegree = Math.floor(Math.random() * 360);
+        var totalRotation = 3600 + randomDegree; 
+
+        wheel.style.transform = "rotate(" + totalRotation + "deg)";
         btn.style.display = 'none';
+
         setTimeout(function() {
-            var angle = (360 - (total % 360)) % 360;
-            if (angle >= 0 && angle < 90) { 
+            var actualAngle = randomDegree % 360;
+
+            if (actualAngle >= 0 && actualAngle < 90) { 
                 discount = 0.1; 
                 res.innerHTML = "GAGNÉ -10% !";
-                document.getElementById('promoBadge').style.display = 'block';
-            } else if (angle >= 180 && angle < 270) { 
+            } else if (actualAngle >= 180 && actualAngle < 270) { 
                 discount = 0.2; 
                 res.innerHTML = "LÉGENDAIRE -20% !";
-                document.getElementById('promoBadge').style.display = 'block';
             } else { 
                 discount = 0; 
                 res.innerHTML = "RIEN CETTE FOIS...";
             }
+
+            if(discount > 0) document.getElementById('promoBadge').style.display = 'block';
             res.style.display = "block";
             close.style.display = "inline-block";
         }, 4000);
     }
-    function closeRoulette() { document.getElementById('rouletteOverlay').style.display = 'none'; }
+
+    function closeRoulette() { 
+        document.getElementById('rouletteOverlay').style.display = 'none'; 
+    }
+
     var fruits = { 'gomu': 19.99, 'ope': 19.99, 'mera': 24.99 };
+
     function openFruit(id) {
         var p = fruits[id];
         var f = (p * (1 - discount)).toFixed(2);
         document.getElementById('modalName').innerText = id.toUpperCase();
         document.getElementById('modalImg').src = id + ".png";
+        
         if (discount > 0) {
             document.getElementById('oldPrice').innerText = p + "€";
             document.getElementById('oldPrice').style.display = 'inline';
         } else {
             document.getElementById('oldPrice').style.display = 'none';
         }
+        
         document.getElementById('modalPrice').innerText = f + "€";
-        document.getElementById('buyButton').onclick = function() { window.open("https://www.paypal.me/glprints/" + f, '_blank'); };
+        document.getElementById('buyButton').onclick = function() { 
+            window.open("https://www.paypal.me/glprints/" + f, '_blank'); 
+        };
         document.getElementById('fruitModal').style.display = 'block';
     }
-    function closeModal() { document.getElementById('fruitModal').style.display = 'none'; }
+
+    function closeModal() { 
+        document.getElementById('fruitModal').style.display = 'none'; 
+    }
 </script>
 
 </body>
